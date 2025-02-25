@@ -1,55 +1,33 @@
 "use client";
-
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-export default function Home() {
-  const boxFromTo = useRef(null);
-  const container = useRef(null);
-  const staggerBoxes = useRef([]);
+export default function HeroSection() {
+  const textRef = useRef(null);
 
   useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
-
-    // ✅ Moves between two states (Ping-pong effect)
-    gsap.to(boxFromTo.current, {
-      x: 200,
-      duration: 2,
-      repeat: -1,
-      yoyo: true,
-    });
-
-    // ✅ Stagger Animation (Each box appears in sequence)
-    gsap.from(staggerBoxes.current, {
-      opacity: 0,
+    // ✅ Vertical Motion with Fade In/Out
+    gsap.from(textRef.current.children, {
+      y:50 ,          // Moves text down by 50px
+      opacity: 0,         // Fades out
       duration: 1,
-      stagger: 0.3, // Each box animates 0.3s after the previous one
+      stagger:-0.5        // Animation duration
+      // ease: "power2.inOut", // Smooth easing
+      // repeat: -1,         // Infinite loop
+               // Moves back up and fades in
     });
 
   }, []);
 
   return (
-    <div ref={container} className="p-10 h-screen flex flex-col bg-black justify-center items-center gap-10">
-      
-      {/* Ping-pong Animation */}
-      <div ref={boxFromTo} className="border w-40 h-40 rounded-xl bg-yellow-300 flex items-center justify-center">
-        .fromTo() → Moves Between Two States
-      </div>
+    <div className="h-screen flex justify-center items-center bg-gray-900 text-white text-center">
+      <div ref={textRef} className="text-5xl font-bold absolute">
 
-      {/* Stagger Animation (Boxes appearing one by one) */}
-      <div className="flex gap-5 justify-center items-center">
-        {Array.from({ length: 5 }).map((_, index) => (
-          <div
-            key={index}
-            ref={(el) => (staggerBoxes.current[index] = el)}
-            className="stagger-box border w-20 h-20 bg-blue-500 rounded-xl flex items-center justify-center"
-          >
-            {index + 1}
-          </div>
-        ))}
+    <h2>Welcome to My Portfolio</h2>
+    <h2>Welcome to My Portfolio</h2>
+    <h2>Welcome to My Portfolio</h2>
+    <h2>Welcome to My Portfolio</h2>
       </div>
-
     </div>
   );
 }

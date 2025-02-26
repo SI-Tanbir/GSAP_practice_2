@@ -3,30 +3,37 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 
 export default function HeroSection() {
-  const textRef = useRef(null);
+  const boxContainerRef = useRef(null);
 
   useEffect(() => {
-    // ✅ Vertical Motion with Fade In/Out
-    gsap.from(textRef.current.children, {
-      y:50 ,          // Moves text down by 50px
-      opacity: 0,         // Fades out
+    // ✅ Select all boxes inside the container
+    const boxes = boxContainerRef.current.children;
+
+    // ✅ GSAP Animation with Stagger & Random Colors
+    gsap.from(boxes, {
+      y: 50, // Moves each box down by 50px initially
+      opacity: 0, // Fades in
       duration: 1,
-      stagger:-0.5        // Animation duration
-      // ease: "power2.inOut", // Smooth easing
-      // repeat: -1,         // Infinite loop
-               // Moves back up and fades in
+      stagger: {
+        amount: 4, // All boxes animate within 2 seconds
+        from: "random", // Boxes appear in a random order
+      },
+      ease: "power2.out",
     });
 
+    // ✅ Random Color Assignment
+    Array.from(boxes).forEach((box) => {
+      box.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 60%)`; // Generates random colors
+    });
   }, []);
 
   return (
     <div className="h-screen flex justify-center items-center bg-gray-900 text-white text-center">
-      <div ref={textRef} className="text-5xl font-bold absolute">
-
-    <h2>Welcome to My Portfolio</h2>
-    <h2>Welcome to My Portfolio</h2>
-    <h2>Welcome to My Portfolio</h2>
-    <h2>Welcome to My Portfolio</h2>
+      <div ref={boxContainerRef} className="grid grid-cols-12 gap-4">
+        {/* ✅ Mapping 30 Boxes */}
+        {Array.from({ length: 84 }).map((_, index) => (
+          <div key={index} className="w-16 h-16 rounded-md shadow-lg"></div>
+        ))}
       </div>
     </div>
   );
